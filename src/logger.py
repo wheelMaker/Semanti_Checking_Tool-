@@ -12,10 +12,11 @@
 __auther__ = 'wywang'
 
 import logging
+from file_IO import *
 
 
 class LoggerException(Exception):
-    def __init__(self, msg='', module_name='logger'):
+    def __init__(self, msg='', module_name='LOGGER'):
         _logger_logger.log_exception(msg, module_name)
 
 
@@ -49,7 +50,7 @@ class Logger(object):
 
     def set_level(self, level='DEBUG'):
         if level in self._types_log_level:
-            self._log_level = log_level
+            self._log_level = level
             return self._log_level
         else:
             return LoggerException('Wrong log level!!!')
