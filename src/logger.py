@@ -9,7 +9,7 @@
         ...
 """
 
-__auther__ = 'wywang'
+__auther__ = 'wyatt wang'
 
 import logging
 from file_IO import *
