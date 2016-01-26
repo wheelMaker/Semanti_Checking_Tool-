@@ -27,6 +27,7 @@ DATEFMT = "%Y-%m-%d %H:%M:%S"
 class GCSLogFormat(logging.Formatter):
     def __init__(self, fmt=FORMAT, dfmt=DATEFMT):
         logging.Formatter.__init__(self, fmt, dfmt)
+        print self._fmt + '  wpf'
 
     def set_format(self):
         pass
@@ -70,6 +71,9 @@ class Logger(object):
 
     def get_module(self):
         return self._log_module
+
+    def create_log_file(self):
+        pass
 
     def log_exception(self, msg='', module_name=''):
         pass
