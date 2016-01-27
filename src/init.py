@@ -5,3 +5,4 @@
 
 
 print 'GCS checker init'
+print 'test for gerrit'
