@@ -12,12 +12,15 @@
 __auther__ = 'wyatt wang'
 
 import logging
-from file_IO import *
+import file_IO as fIO
 
 
 class LoggerException(Exception):
+    _error_message = ''
+
     def __init__(self, msg='', module_name='LOGGER'):
-        _logger_logger.log_exception(msg, module_name)
+        self._error_message = msg
+        print self._error_message
 
 
 FORMAT = "[%(asctime)s] - %(name)s - %(levelname)s: %(message)s"
@@ -43,11 +46,15 @@ class Logger(object):
     _log_module = ''
     _log_path = ''
     _name = 'GCS_Checker.log'
+    _log_instance = ''
 
     def __init__(self, log_path='~', log_level='ERROR', log_module='LOGGER'):
         self.set_level(log_level)
         self.set_module(log_module)
         self.set_path(log_path)
+        self._log_instance = fIO.PyFileIO(self._name)
+        print "creating log file ...", self._log_instance._file_name
+        self._log_instance.open_file()
 
     def set_level(self, level='DEBUG'):
         if level in self._types_log_level:
@@ -62,6 +69,9 @@ class Logger(object):
             return self._log_module
         else:
             return LoggerException('Wrong log module!!!')
+
+    def get_name(self):
+        return self._name
 
     def set_path(self, path='~'):
         pass
@@ -78,4 +88,3 @@ class Logger(object):
     def log_exception(self, msg='', module_name=''):
         pass
 
-_logger_logger = Logger()
