@@ -13,6 +13,7 @@ __auther__ = 'wyatt wang'
 
 import logging
 import file_IO as fIO
+import os
 
 
 class LoggerException(Exception):
@@ -45,16 +46,24 @@ class Logger(object):
     _log_level = ''
     _log_module = ''
     _log_path = ''
-    _name = 'GCS_Checker.log'
+    _log_name = ''
     _log_instance = ''
 
-    def __init__(self, log_path='~', log_level='ERROR', log_module='LOGGER'):
+    def __init__(self, log_name='GCS_Checker.log', log_path='~', log_level='ERROR', log_module='LOGGER'):
+        self.set_log_file_name(log_name)
         self.set_level(log_level)
         self.set_module(log_module)
         self.set_path(log_path)
-        self._log_instance = fIO.PyFileIO(self._name)
-        print "creating log file ...", self._log_instance._file_name
-        self._log_instance.open_file()
+        self._log_instance = fIO.FileIO(self._log_name)
+        os.chdir(self._log_path)
+        print "creating log file ...", self._log_instance.get_file_name()
+        self._log_instance.open_file(mode='w+')
+
+    def set_log_file_name(self, name):
+        if '' == name:
+            raise LoggerException("null log file name, quit!")
+        else:
+            self._log_name = name
 
     def set_level(self, level='DEBUG'):
         if level in self._types_log_level:
@@ -71,10 +80,16 @@ class Logger(object):
             return LoggerException('Wrong log module!!!')
 
     def get_name(self):
-        return self._name
+        return self._log_name
 
     def set_path(self, path='~'):
-        pass
+        if '' == path:
+            path = os.getcwd()
+            print "Try to set log path to null!!! Change it to working dir: ", path
+            self._log_path = path
+        else:
+            print "Setting path to: ", path
+            self._log_path = path
 
     def get_level(self):
         return self._log_level

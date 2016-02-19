@@ -15,7 +15,7 @@ default_log_file = "GCS_Checker.log"
 print "Logger ut case 1 for __init__ function..."
 if os.path.isfile(default_log_file):
     os.remove(default_log_file)
-logger_instance = logger.Logger()
+logger_instance = logger.Logger(log_path='/home/wywang/tmp')
 if os.path.isfile(logger_instance.get_name()):
     pass
 else:
