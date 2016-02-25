@@ -19,18 +19,22 @@ class FileIO(object):
     _file = ''
     _mode = 'r'
 
-    def __init__(self, file_name=''):
-        if '' == file_name:
+    @staticmethod
+    def check_file_name_valid(f_name):
+        if '' == f_name:
             raise FileIOException('File name is null!!!')
-        self._file_name = file_name
+        else:
+            return True
+
+    def __init__(self, file_name=''):
+        if self.check_file_name_valid(file_name):
+            self._file_name = file_name
 
     def get_file_name(self):
         return self._file_name
 
     def set_file_name(self, file_name):
-        if '' == file_name:
-            raise FileIOException('File name is null!!!')
-        else:
+        if self.check_file_name_valid(file_name):
             self._file_name = file_name
 
     def open_file(self, mode='r'):
@@ -39,6 +43,10 @@ class FileIO(object):
 
     def close_file(self):
         self._file.close()
+
+    def create_file(self):
+        if self.check_file_name_valid(self._file_name):
+            self._file = open(self._file_name, mode='w')
 
 
 class PyFileIO(FileIO):
