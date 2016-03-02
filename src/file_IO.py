@@ -2,6 +2,7 @@
 
 import logger
 import re
+import os
 
 #_file_io_logger = logger.Logger(log_level='ERROR', log_module='FILEIO')
 
@@ -44,9 +45,12 @@ class FileIO(object):
     def close_file(self):
         self._file.close()
 
-    def create_file(self):
-        if self.check_file_name_valid(self._file_name):
-            self._file = open(self._file_name, mode='w')
+    def write_to_file(self, data):
+        #os.write(self._file, data)
+        self._file.write(data)
+
+    def read_file(self, length):
+        return self._file.read(length)
 
 
 class PyFileIO(FileIO):

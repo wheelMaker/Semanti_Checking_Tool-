@@ -47,7 +47,7 @@ class Logger(object):
     _log_module = ''
     _log_path = ''
     _log_name = ''
-    _log_instance = ''
+    _log_instance = fIO.FileIO
 
     def __init__(self, log_name='GCS_Checker.log', log_path='~', log_level='ERROR', log_module='LOGGER'):
         self.set_log_file_name(log_name)
@@ -57,7 +57,7 @@ class Logger(object):
         self._log_instance = fIO.FileIO(self._log_name)
         os.chdir(self._log_path)
         print "creating log file ...", self._log_instance.get_file_name()
-        self._log_instance.open_file(mode='w+')
+        self._log_instance.open_file('w+')
 
     def set_log_file_name(self, name):
         if '' == name:
