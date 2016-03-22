@@ -59,6 +59,12 @@ class Logger(object):
         print "creating log file ...", self._log_instance.get_file_name()
         self._log_instance.open_file('w+')
 
+    #def write_log(self,log_data):
+
+
+    def close_log_instance_file(self):
+        self._log_instance.close_file()
+
     def set_log_file_name(self, name):
         if '' == name:
             raise LoggerException("null log file name, quit!")
@@ -96,9 +102,6 @@ class Logger(object):
 
     def get_module(self):
         return self._log_module
-
-    def create_log_file(self):
-        pass
 
     def log_exception(self, msg='', module_name=''):
         pass
