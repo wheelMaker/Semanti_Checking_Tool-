@@ -4,15 +4,16 @@ import logger
 import re
 import os
 
-#_file_io_logger = logger.Logger(log_level='ERROR', log_module='FILEIO')
+# file_io_logger = logger.Logger(log_level='ERROR', log_module='FILEIO')
 
 
 class FileIOException(Exception):
     _error_message = ''
+
     def __init__(self, msg=""):
         self._error_message = msg
         print self._error_message
-        #_file_io_logger.log_exception(msg, module_name='FILEIO')
+# file_io_logger.log_exception(msg, module_name='FILEIO')
 
 
 class FileIO(object):
