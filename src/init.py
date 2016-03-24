@@ -1,19 +1,43 @@
 #!/usr/bin/python
 '''
-   Verty start of this project
+   Verty start of the software
 '''
 import logging
 import logging.config
 import os
+import GCSException as e
 from optparse import OptionParser
 
 
-class GCSException(Exception):
-    _error_message = ''
+def user_option_analysis(t_options):
 
-    def __init__(self, msg=""):
-        self._error_message = msg
-        print self._error_message
+    opt = {}
+    current_path = os.getcwd()
+
+    try:
+        if not t_options.logFileName:
+            raise e.GCSException('### ---- Null log file name')
+    except e.GCSException:
+        print "Using default log file: GCS.log\n"
+        t_options.logFileName = 'GCS.log'
+    opt['logFileName'] = t_options.logFileName
+
+    try:
+        if not t_options.filename:
+            raise e.GCSException('### ---- Null GCS report file name')
+    except e.GCSException:
+        print "Using default log file: GCS.report\n"
+        t_options.filename = 'GCS.report'
+    opt['filename'] = t_options.filename
+
+    try:
+        if not t_options.codeDir:
+            raise e.GCSException('### ---- Null source code dir')
+    except e.GCSException:
+        t_options.codeDir = current_path
+        print "Using CWD as source code dir\n"
+    opt['codeDir'] = t_options.codeDir
+    return opt
 
 # ---------------Init staffs as below------------------------
 
@@ -22,48 +46,27 @@ parser.add_option("-f", "--file", dest="filename",
                   help="write report to FILE", metavar="FILE")
 parser.add_option("-l", "--logFile", dest="logFileName",
                   help="log will be stored in this file")
+parser.add_option("-d", "--dir", dest="codeDir",
+                  help="source code directory, GCS will go through all .py files in this dir")
 parser.add_option("-q", "--quiet",
                   action="store_false", dest="verbose", default=True,
                   help="don't print status messages to stdout")
 
 (options, args) = parser.parse_args()
+opts = user_option_analysis(options)
 
-try:
-    if not options.logFileName:
-        raise GCSException('Null log file name')
-except GCSException:
-    print "Using default log file: GCS.log"
-
-try:
-    if not options.filename:
-        raise GCSException('Null GCS report file name')
-except GCSException:
-    print "Using default log file: GCS.report"
-
-print 'GCS checker init'
-
-current_path = os.getcwd()
-log_file_name = current_path + '/GCS.log'
 
 logging.config.fileConfig('logging.conf')
-logging.basicConfig(level=logging.DEBUG,
-                    filename=log_file_name,
-                    filemode='w')
+logger = logging.getLogger('Init')
+fh = logging.FileHandler(opts['logFileName'])
+logger.addHandler(fh)
 
-'''
-Here just implement the base logging functionality. For the rest sub modules, more sub logging functionality
-should be implemented separately.
+for key, item in opts.items():
+    logger.debug(str(key) + ': ' + str(item))
 
-Below is the logging examples:
+print '\n'
 
-logging.debug('debug message')
-logging.info('info message')
-logging.warning('warning message')
-logging.error('error message')
-logging.critical('critical message')
-'''
-
-logging.critical('******      GCS Checker Start!!!      ******')
+logger.critical('******      GCS Checker Start!!!      ******')
 
 
 
