@@ -5,6 +5,7 @@
 import logging
 import logging.config
 import os
+import re
 import GCSException as e
 from optparse import OptionParser
 
@@ -64,10 +65,20 @@ logger.addHandler(fh)
 for key, item in opts.items():
     logger.debug(str(key) + ': ' + str(item))
 
-print '\n'
+#print '\n'
 
 logger.critical('******      GCS Checker Start!!!      ******')
 
+codeFiles = []
+files = os.listdir(opts['codeDir'])
+#print files
+for i in range(len(files)):
+    result = re.match("^.*\.py$", files[i])
+    if result:
+        codeFiles.append(files[i])
+
+logger.info('Code files to be checked are: ')
+logger.info(codeFiles)
 
 
 #os.rmdir(log_file_name)
