@@ -40,7 +40,18 @@ def user_option_analysis(t_options):
     opt['codeDir'] = t_options.codeDir
     return opt
 
+
+def get_all_code_files(code_dir):
+    f = []
+    files = os.listdir(code_dir)
+    for i in range(len(files)):
+        result = re.match("^.*\.py$", files[i])
+        if result:
+            f.append(files[i])
+    return f
+
 # ---------------Init staffs as below------------------------
+# --------- step 1, get all user options
 
 parser = OptionParser()
 parser.add_option("-f", "--file", dest="filename",
@@ -56,6 +67,7 @@ parser.add_option("-q", "--quiet",
 (options, args) = parser.parse_args()
 opts = user_option_analysis(options)
 
+# --------- step 2, config logging module
 
 logging.config.fileConfig('logging.conf')
 logger = logging.getLogger('Init')
@@ -65,20 +77,11 @@ logger.addHandler(fh)
 for key, item in opts.items():
     logger.debug(str(key) + ': ' + str(item))
 
-#print '\n'
-
-logger.critical('******      GCS Checker Start!!!      ******')
-
-codeFiles = []
-files = os.listdir(opts['codeDir'])
-#print files
-for i in range(len(files)):
-    result = re.match("^.*\.py$", files[i])
-    if result:
-        codeFiles.append(files[i])
+codeFiles = get_all_code_files(opts['codeDir'])
 
 logger.info('Code files to be checked are: ')
 logger.info(codeFiles)
 
+# -----------------------------------------------------------
 
-#os.rmdir(log_file_name)
+logger.critical('******      GCS Checker Start!!!      ******')
