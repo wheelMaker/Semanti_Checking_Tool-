@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-import logger
+#import logger
 import re
 import os
 

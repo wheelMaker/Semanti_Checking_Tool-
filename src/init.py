@@ -8,6 +8,8 @@ import os
 import re
 import GCSException as e
 from optparse import OptionParser
+import file_IO
+import time
 
 
 def user_option_analysis(t_options):
@@ -82,6 +84,23 @@ codeFiles = get_all_code_files(opts['codeDir'])
 logger.info('Code files to be checked are: ')
 logger.info(codeFiles)
 
+# --------- step 3, prepare report file
+
+report = file_IO.FileIO("report.txt")
+report.open_file(mode='w')
+current_time = time.asctime()
+report.write_to_file(current_time)
+report.write_to_file(' Checking code files in dir: \n')
+report.write_to_file(opts['codeDir'])
+report.write_to_file('\nCode files are: ')
+for item in codeFiles:
+    report.write_to_file('\n')
+    report.write_to_file(item)
+
 # -----------------------------------------------------------
 
 logger.critical('******      GCS Checker Start!!!      ******')
+'''
+Checking python code files here.
+'''
+report.close_file()
