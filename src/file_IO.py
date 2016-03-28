@@ -1,10 +1,6 @@
 #!/usr/bin/python
 
-#import logger
 import re
-import os
-
-# file_io_logger = logger.Logger(log_level='ERROR', log_module='FILEIO')
 
 
 class FileIOException(Exception):
