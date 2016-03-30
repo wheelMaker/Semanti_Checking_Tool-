@@ -3,7 +3,7 @@
 # Very start of the software
 
 import Initiator
-from GCSChecker import PyGCSChecker
+import GCSChecker
 
 # ---------------Init staffs as below------------------------
 init_agent = Initiator.Initiator()
@@ -26,7 +26,8 @@ logger.critical('******      GCS Checker Start!!!      ******')
 '''
 Checking python code files here.
 '''
-checker = PyGCSChecker()
-checker.get_checker_type(init_agent.code_files(), init_agent.report())
+checker = GCSChecker.GCSChecker()
+# checker.get_checker_type(init_agent.code_files(), init_agent.report())
+
 
 init_agent.report().close_file()

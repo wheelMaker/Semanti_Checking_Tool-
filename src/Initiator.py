@@ -78,11 +78,12 @@ class Initiator(object):
         print self.__opt
 
     def get_all_code_files(self):
+        # need to re-write this function because it could not get all files in a dir recursively
         files = os.listdir(self.__opt['codeDir'])
-        for i in range(len(files)):
-            result = re.match("^.*\.py$", files[i])
+        for item in files:
+            result = re.match("^.*\.py$", item)
             if result:
-                self.__code_files.append(files[i])
+                self.__code_files.append(item)
 
     def config_parser(self):
 
