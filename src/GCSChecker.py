@@ -4,7 +4,7 @@ import GCSException as GE
 
 class GCSChecker(object):
 
-    current_file_name = ''
+    current_file_name = []
     current_line = 0
     checker_logger = None
 
@@ -15,9 +15,6 @@ class GCSChecker(object):
             raise GE.GCSException("No proper logger initiated!!")
         self.current_file = cFName
         print "GCSChecker created!"
-
-    # def lambda_check(self):
-
 
     @staticmethod
     def get_checker_type(code_file, report):

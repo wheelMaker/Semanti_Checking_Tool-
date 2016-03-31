@@ -77,13 +77,25 @@ class Initiator(object):
         self.__opt['codeDir'] = options.codeDir
         print self.__opt
 
-    def get_all_code_files(self):
-        # need to re-write this function because it could not get all files in a dir recursively
-        files = os.listdir(self.__opt['codeDir'])
-        for item in files:
-            result = re.match("^.*\.py$", item)
-            if result:
-                self.__code_files.append(item)
+    def get_all_code_files(self, t_dir='', code_type="py"):
+
+        pattern = re.compile("^.*\." + code_type + "$")
+        for root, dirs, files in os.walk(t_dir):
+            # print root, "consumes"
+            # print files
+            # print sum([os.path.getsize(os.path.join(root, name)) for name in files])
+            # print "bytes in", len(files), "non-directory files"
+            if 'CVS' in dirs:
+                dirs.remove('CVS')  # don't visit CVS directories
+            else:
+                pass
+            for each_file in files:
+                if re.search(pattern, each_file):
+                    each_file = root + os.sep + each_file
+                    self.__code_files.append(each_file)
+                    print each_file
+                else:
+                    pass
 
     def config_parser(self):
 
@@ -97,3 +109,5 @@ class Initiator(object):
         self.__parser.add_option("-q", "--quiet",
                                  action="store_false", dest="verbose", default=True,
                                  help="don't print status messages to stdout")
+        self.__parser.add_option("-t", "--type",
+                                 help="Source file type. Default is python. Use py, cc, cpp, c, h to name it.")
