@@ -26,8 +26,9 @@ logger.critical('******      GCS Checker Start!!!      ******')
 '''
 Checking python code files here.
 '''
-checker = GCSChecker.GCSChecker(clogger=logger)
+checker = GCSChecker.GCSChecker(init_agent.code_files(), logger)
 # checker.get_checker_type(init_agent.code_files(), init_agent.report())
+checker.check()
 
 
 init_agent.report().close_file()
