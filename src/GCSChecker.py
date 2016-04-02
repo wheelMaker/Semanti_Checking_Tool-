@@ -6,6 +6,7 @@ import googleStyler
 class GCSChecker(object):
 
     current_file_name = []
+    current_file_content = ''
     code_files = []
     checker_logger = None
     styler = googleStyler.GoogleStyler()
@@ -26,6 +27,21 @@ class GCSChecker(object):
         print res.group()
 
     def check(self):
+
+        '''
+        This function actually does the real GCS check.
+        Now for the first release, simple check on the code files would be implemented.
+        It means:
+            1. No file content pre-checking
+            2. Load whole file content into the memory
+            3. Init only one thread(process) for it.
+            4. Only implement the most basic google stylers, code checking will be line by line.
+            5. Any checking mechanism re-factory should be within this method.
+
+        For the very start version, code will be really stupid.
+        I feel sad for this...
+        '''
+
         for code in self.code_files:
             self.current_file_name = code
             self.checker_logger.info('File in checking: ' + self.current_file_name)
