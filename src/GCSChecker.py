@@ -45,7 +45,7 @@ class GCSChecker(object):
         for code in self.code_files:
             self.current_file_name = code
             self.checker_logger.info('File in checking: ' + self.current_file_name)
-            # self.styler(self.current_file_name)
+            self.styler.get_all_styler_functions()
         pass
 
 
@@ -64,3 +64,7 @@ code_types = {
     "py": PyGCSChecker,
     "robot": RoGCSChecker,
     }
+
+if __name__ == "__main__":
+    c = GCSChecker()
+    c.check()
