@@ -9,7 +9,7 @@ class GCSChecker(object):
     current_file_content = ''
     code_files = []
     checker_logger = None
-    styler = googleStyler.GoogleStyler()
+    styler = None
 
     def __init__(self, cfiles=[], clogger=None):
 
@@ -19,7 +19,9 @@ class GCSChecker(object):
         self.code_files = cfiles
         if not self.code_files:
             raise GE.GCSException("No code file to be checked!!")
-        print "GCSChecker created!"
+        self.styler = googleStyler.GoogleStyler()
+        self.checker_logger.info(self.styler.functions())
+        self.checker_logger.info("GCSChecker created!")
 
     @staticmethod
     def get_checker_type(code_file, report):
@@ -45,8 +47,7 @@ class GCSChecker(object):
         for code in self.code_files:
             self.current_file_name = code
             self.checker_logger.info('File in checking: ' + self.current_file_name)
-            self.styler.get_all_styler_functions()
-        pass
+            self.styler.run_stylers()
 
 
 class RoGCSChecker(GCSChecker):
