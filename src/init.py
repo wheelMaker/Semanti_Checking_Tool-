@@ -14,6 +14,7 @@ init_agent.get_all_code_files(init_agent.opts()['codeDir'])
 init_agent.init_report()
 
 logger = init_agent.logger()
+report = init_agent.report()
 
 for key in init_agent.opts():
     # init_agent.logger().debug(str(key) + ': ' + str(init_agent.opts()[key]))
@@ -26,7 +27,7 @@ logger.critical('******      GCS Checker Start!!!      ******')
 '''
 Checking python code files here.
 '''
-checker = GCSChecker.GCSChecker(init_agent.code_files(), logger)
+checker = GCSChecker.GCSChecker(init_agent.code_files(), logger, report)
 # checker.get_checker_type(init_agent.code_files(), init_agent.report())
 checker.check()
 

@@ -10,13 +10,15 @@ import re
 class GoogleStyler(object):
 
     __selections = []
-    __file = ''
     __functions = []
+    __result = ''
+    __report = None
 
-    def __init__(self, styler_selections=[]):
+    def __init__(self, styler_selections=[], report=None):
         # currently, all sylers selected and no parameter needed in this func
         # self.__selections = styler_selections
         self.find_all_styler_functions()
+        self.__report = report
 
     def __call__(self, *args, **kwargs):
         pass
@@ -30,11 +32,21 @@ class GoogleStyler(object):
             if re.search("^styler_", f) is not None:
                 self.__functions.append(f)
 
-    def run_stylers(self):
+    def run_stylers(self, content):
         for f in self.functions():
-            getattr(self, f)()
+            getattr(self, f)(content)
 
-    def styler_single_line_max_characters(self):
+    def styler_single_line_max_characters(self, content=''):
+        code = content.split('\n')
         max_characters = 80
-        print "haha"
-        pass
+        line_number = 1
+        for string in code:
+            l = len(string)
+            if l > max_characters:
+                output = 'GCS Error exceed max characters ' + str(max_characters) + \
+                         ' in line ' + str(line_number) + ' ' + str(l) + '\n'
+                self.__result += output
+            line_number += 1
+        self.__report.write_to_file(self.__result)
+        self.__result = ''
+

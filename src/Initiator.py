@@ -40,6 +40,7 @@ class Initiator(object):
         for item in self.__code_files:
             self.__report.write_to_file('\n')
             self.__report.write_to_file(item)
+        self.__report.write_to_file('\n')
 
     def config_logger(self):
         logging.config.fileConfig('logging.conf')
