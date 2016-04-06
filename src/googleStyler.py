@@ -1,7 +1,7 @@
 '''
 Each styler in this class means a checking rule for GCS.
 Styler function must start with string "styler_" and end with its functionality
-GCSChecker.check will invoke this class' stylers one by one for every single source file.
+GCSChecker.check() will invoke this class' stylers one by one for every single source file.
 '''
 
 import re
