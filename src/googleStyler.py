@@ -60,5 +60,15 @@ class GoogleStyler(object):
         # 4. never catch all kinds of exceptions
         # 5. use finally clause to do something after the exception
         # 6. when catching an exception, use as rather than a comma
-        pass
+        s = ''
+        s.rfind()
+        for string in self.__code:
+            if -1 == string.rfind('raise'):
+                continue
+            else:
+                pass
+        #     line_number += 1
+        # self.__report.write_to_file(self.__result)
+        # self.__result = ''
+        # pass
 
