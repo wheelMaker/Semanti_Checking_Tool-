@@ -40,6 +40,18 @@ class GoogleStyler(object):
         for f in self.functions():
             getattr(self, f)()
 
+    # def styler_single_line(self):
+    #     line_number = 1
+    #     for string in self.__code:
+    #         l = len(string)
+    #         if l > max_characters:
+    #             output = 'GCS Error exceed max characters ' + str(max_characters) + \
+    #                      ' in line ' + str(line_number) + ' ' + str(l) + '\n'
+    #             self.__result += output
+    #         line_number += 1
+    #     self.__report.write_to_file(self.__result)
+    #     self.__result = ''
+
     def styler_single_line_max_characters(self):
         max_characters = 80
         line_number = 1
@@ -60,14 +72,13 @@ class GoogleStyler(object):
         # 4. never catch all kinds of exceptions
         # 5. use finally clause to do something after the exception
         # 6. when catching an exception, use as rather than a comma
-        s = ''
-        s.rfind()
-        for string in self.__code:
+        tmp_code = (self.__content.replace('\\\n', ' ')).split('\n')
+        for string in tmp_code:
             if -1 == string.rfind('raise'):
-                continue
+                print 'oh yeah!'
             else:
                 pass
-        #     line_number += 1
+            # line_number += 1
         # self.__report.write_to_file(self.__result)
         # self.__result = ''
         # pass
