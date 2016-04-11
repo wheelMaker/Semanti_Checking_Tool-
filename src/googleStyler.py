@@ -58,7 +58,7 @@ class GoogleStyler(object):
         for string in self.__code:
             l = len(string)
             if l > max_characters:
-                output = 'GCS Error exceed max characters ' + str(max_characters) + \
+                output = 'GCS Error: single line exceed max characters ' + str(max_characters) + \
                          ' in line ' + str(line_number) + ' ' + str(l) + '\n'
                 self.__result += output
             line_number += 1
@@ -72,14 +72,33 @@ class GoogleStyler(object):
         # 4. never catch all kinds of exceptions
         # 5. use finally clause to do something after the exception
         # 6. when catching an exception, use as rather than a comma
+        line_number = 1
+        output = ''
         tmp_code = (self.__content.replace('\\\n', ' ')).split('\n')
+        print tmp_code
         for string in tmp_code:
             if -1 == string.rfind('raise'):
-                print 'oh yeah!'
-            else:
                 pass
-            # line_number += 1
-        # self.__report.write_to_file(self.__result)
-        # self.__result = ''
-        # pass
-
+            else:
+                f, m, e = string.partition('raise ')
+                print e
+                # Error 1 checking, two or more arguments in exception raising
+                res = re.match(r".+, .+", e)
+                if res:
+                    output += 'GCS Error: exception expression has two or more arguments in line: ' + \
+                             str(line_number) + '\n'
+                # Error 2 checking, no exception description
+                if -1 == e.rfind('(') or -1 == e.rfind(')'):
+                    output += 'GCS Error: exception expression has no exception description in line: ' + \
+                             str(line_number) + '\n'
+                # Error 3 checking, raise string as whole exception
+                res1 = re.match(r'^\".*\"$', e)
+                res2 = re.match(r'^\'.*\'$', e)
+                if res1 or res2:
+                    output += 'GCS Error: raise string as exception in line: ' + \
+                             str(line_number) + '\n'
+            line_number += 1
+        self.__result += output
+        self.__report.write_to_file(self.__result)
+        print self.__result
+        self.__result = ''
