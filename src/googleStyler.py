@@ -97,6 +97,14 @@ class GoogleStyler(object):
                 if res1 or res2:
                     output += 'GCS Error: raise string as exception in line: ' + \
                              str(line_number) + '\n'
+                
+            if -1 == string.rfind('except'):
+                pass
+            else:
+                res = re.match(r".*except.*:", string)
+                if res:
+                    output += 'GCS Error: catch all exceptions in line: ' + \
+                             str(line_number) + '\n'
             line_number += 1
         self.__result += output
         self.__report.write_to_file(self.__result)
