@@ -65,6 +65,18 @@ class GoogleStyler(object):
         self.__report.write_to_file(self.__result)
         self.__result = ''
 
+    def styler_for_syntax(self):
+        line_number = 1
+        for string in self.__code:
+            res = re.match(r".*for.*in.*\.keys()\s*:", string)
+            if res:
+                output = 'GCS Error: for item in dict.keys() ' + \
+                         ' in line ' + str(line_number) + ' ' + str(l) + '\n'
+                self.__result += output
+            line_number += 1
+        self.__report.write_to_file(self.__result)
+        self.__result = ''
+
     def styler_exception_format(self):
         # 1. exception with no description string
         # 2. exception with 2 argutments
@@ -97,7 +109,7 @@ class GoogleStyler(object):
                 if res1 or res2:
                     output += 'GCS Error: raise string as exception in line: ' + \
                              str(line_number) + '\n'
-                
+
             if -1 == string.rfind('except'):
                 pass
             else:
