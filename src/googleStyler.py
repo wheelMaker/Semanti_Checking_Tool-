@@ -67,13 +67,18 @@ class GoogleStyler(object):
 
     def styler_for_syntax(self):
         line_number = 1
-        for string in self.__code:
-            res = re.match(r".*for.*in.*\.keys()\s*:", string)
+        tmp_code = (self.__content.replace('\\\n', ' ')).split('\n')
+        for string in tmp_code:
+            #print "wpf" + string
+            res = re.search(r"for", string)#in.*\.keys()\s*:", string)
+            #print res
             if res:
                 output = 'GCS Error: for item in dict.keys() ' + \
-                         ' in line ' + str(line_number) + ' ' + str(l) + '\n'
+                         ' in line ' + str(line_number) + '\n'
                 self.__result += output
             line_number += 1
+        self.__result+=output
+        print self.__result
         self.__report.write_to_file(self.__result)
         self.__result = ''
 
