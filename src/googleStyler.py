@@ -70,15 +70,15 @@ class GoogleStyler(object):
         tmp_code = (self.__content.replace('\\\n', ' ')).split('\n')
         for string in tmp_code:
             #print "wpf" + string
-            res = re.search(r"for", string)#in.*\.keys()\s*:", string)
+            res = re.search(r".*for .*in.*keys()", string)#in.*\.keys()\s*:", string)
             #print res
             if res:
-                output = 'GCS Error: for item in dict.keys() ' + \
+                output = 'GCS Error: for item in ***.keys() ' + \
                          ' in line ' + str(line_number) + '\n'
                 self.__result += output
             line_number += 1
-        self.__result+=output
-        print self.__result
+        #self.__result += output
+        #print self.__result
         self.__report.write_to_file(self.__result)
         self.__result = ''
 
@@ -98,7 +98,7 @@ class GoogleStyler(object):
                 pass
             else:
                 f, m, e = string.partition('raise ')
-                print e
+                # print e
                 # Error 1 checking, two or more arguments in exception raising
                 res = re.match(r".+, .+", e)
                 if res:
@@ -125,5 +125,5 @@ class GoogleStyler(object):
             line_number += 1
         self.__result += output
         self.__report.write_to_file(self.__result)
-        print self.__result
+        # print self.__result
         self.__result = ''
