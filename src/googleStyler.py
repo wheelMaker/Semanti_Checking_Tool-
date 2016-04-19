@@ -15,6 +15,7 @@ class GoogleStyler(object):
     __report = None
     __content = ''
     __code = ''
+    __line_nu  = 1
 
     def __init__(self, styler_selections=[], report=None):
         # currently, all sylers selected and no parameter needed in this func
@@ -24,6 +25,12 @@ class GoogleStyler(object):
 
     def __call__(self, *args, **kwargs):
         pass
+
+    @classmethod
+    def deco_styler_line_by_line(cls):
+        def wrapper():
+            GoogleStyler.__line_nu = 1
+        return wrapper()
 
     def functions(self):
         return self.__functions
@@ -51,6 +58,7 @@ class GoogleStyler(object):
     #         line_number += 1
     #     self.__report.write_to_file(self.__result)
     #     self.__result = ''
+
 
     def styler_single_line_max_characters(self):
         max_characters = 80
