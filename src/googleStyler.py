@@ -5,6 +5,7 @@ GCSChecker.check() will invoke this class' stylers one by one for every single s
 '''
 
 import re
+import styler_deco
 
 
 class GoogleStyler(object):
@@ -25,12 +26,6 @@ class GoogleStyler(object):
 
     def __call__(self, *args, **kwargs):
         pass
-
-    @classmethod
-    def deco_styler_line_by_line(cls):
-        def wrapper():
-            GoogleStyler.__line_nu = 1
-        return wrapper()
 
     def functions(self):
         return self.__functions
@@ -59,19 +54,19 @@ class GoogleStyler(object):
     #     self.__report.write_to_file(self.__result)
     #     self.__result = ''
 
-
+    @styler_deco.deco_styler_line_by_line
     def styler_single_line_max_characters(self):
         max_characters = 80
-        line_number = 1
         for string in self.__code:
             l = len(string)
             if l > max_characters:
                 output = 'GCS Error: single line exceed max characters ' + str(max_characters) + \
                          ' in line ' + str(line_number) + ' ' + str(l) + '\n'
                 self.__result += output
-            line_number += 1
+            self.__line_nu += 1
         self.__report.write_to_file(self.__result)
         self.__result = ''
+        # self.__line_nu = 1
 
     def styler_for_syntax(self):
         line_number = 1
@@ -135,3 +130,5 @@ class GoogleStyler(object):
         self.__report.write_to_file(self.__result)
         # print self.__result
         self.__result = ''
+
+
