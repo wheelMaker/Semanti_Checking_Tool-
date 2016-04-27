@@ -5,6 +5,7 @@ GCSChecker.check() will invoke this class' stylers one by one for every single s
 '''
 
 import re
+import styler_deco
 
 
 class GoogleStyler(object):
@@ -15,6 +16,7 @@ class GoogleStyler(object):
     __report = None
     __content = ''
     __code = ''
+    __line_nu  = 1
 
     def __init__(self, styler_selections=[], report=None):
         # currently, all sylers selected and no parameter needed in this func
@@ -52,16 +54,34 @@ class GoogleStyler(object):
     #     self.__report.write_to_file(self.__result)
     #     self.__result = ''
 
+    @styler_deco.deco_styler_line_by_line
     def styler_single_line_max_characters(self):
         max_characters = 80
-        line_number = 1
         for string in self.__code:
             l = len(string)
             if l > max_characters:
                 output = 'GCS Error: single line exceed max characters ' + str(max_characters) + \
                          ' in line ' + str(line_number) + ' ' + str(l) + '\n'
                 self.__result += output
+            self.__line_nu += 1
+        self.__report.write_to_file(self.__result)
+        self.__result = ''
+        # self.__line_nu = 1
+
+    def styler_for_syntax(self):
+        line_number = 1
+        tmp_code = (self.__content.replace('\\\n', ' ')).split('\n')
+        for string in tmp_code:
+            #print "wpf" + string
+            res = re.search(r".*for .*in.*keys()", string)#in.*\.keys()\s*:", string)
+            #print res
+            if res:
+                output = 'GCS Error: for item in ***.keys() ' + \
+                         ' in line ' + str(line_number) + '\n'
+                self.__result += output
             line_number += 1
+        #self.__result += output
+        #print self.__result
         self.__report.write_to_file(self.__result)
         self.__result = ''
 
@@ -81,7 +101,7 @@ class GoogleStyler(object):
                 pass
             else:
                 f, m, e = string.partition('raise ')
-                print e
+                # print e
                 # Error 1 checking, two or more arguments in exception raising
                 res = re.match(r".+, .+", e)
                 if res:
@@ -97,7 +117,7 @@ class GoogleStyler(object):
                 if res1 or res2:
                     output += 'GCS Error: raise string as exception in line: ' + \
                              str(line_number) + '\n'
-                
+
             if -1 == string.rfind('except'):
                 pass
             else:
@@ -108,5 +128,7 @@ class GoogleStyler(object):
             line_number += 1
         self.__result += output
         self.__report.write_to_file(self.__result)
-        print self.__result
+        # print self.__result
         self.__result = ''
+
+
