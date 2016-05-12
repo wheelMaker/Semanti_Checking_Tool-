@@ -7,10 +7,14 @@ def decorator(args):
 
     return _deco
 
+
 class Foo(object):
-    @decorator(123)
+    i = 1
+
+    @decorator(234)
     def bar(self):
         print('i:', self.i)
-	
+
+
 f = Foo()
 f.bar()
